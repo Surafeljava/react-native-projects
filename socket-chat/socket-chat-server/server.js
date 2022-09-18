@@ -7,6 +7,12 @@ app.get('/', (req, res) => {
     })
 });
 
+app.get('/chat', (req, res) => {
+    res.json({
+        message: "Welcome to chat api"
+    })
+});
+
 app.listen(8080, ()=>{
     console.log('Listening on Port 8080');
 });
