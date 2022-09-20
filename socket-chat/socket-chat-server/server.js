@@ -1,18 +1,32 @@
-const express = require('express');
-const app = express();
+const app = require('express')();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+// const cors = require('cors');
 
-app.get('/', (req, res) => {
-    res.json({
-        Hello: "Hello World"
-    })
+// var corsOptions = {
+//     origin: '*',
+//     optionsSuccessStatus: 200 // For legacy browser support
+// }
+
+// app.use(cors(corsOptions));
+
+
+// let users = [];
+// let messages = [];
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
-app.get('/chat', (req, res) => {
-    res.json({
-        message: "Welcome to chat api"
-    })
+io.on('connection', (socket) => {
+    socket.on('message', (data) => {
+        // messages.push(data);
+        io.emit('message', data);
+    });
 });
 
-app.listen(8080, ()=>{
-    console.log('Listening on Port 8080');
+server.listen(4000, () => {
+    console.log('Listening on port 4000')
 });
